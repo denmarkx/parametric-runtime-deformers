@@ -25,6 +25,13 @@ void Deformer::disassemble_node() {
             rewriter = new GeomVertexRewriter(geom->modify_vertex_data(), "vertex");
             geom_data->vertices = rewriter;
 
+            // While we're here, we're gonna get the defaults.
+            LVecBase3f vertex = LVecBase3f::zero();
+            while (!rewriter->is_at_end()) {
+                vertex = rewriter->get_data3f();
+                geom_data->original_vertices.push_back(vertex);
+            }
+
             // and another for the normals..
             rewriter = new GeomVertexRewriter(geom->modify_vertex_data(), "normals");
             geom_data->normals = rewriter;
@@ -38,29 +45,34 @@ void Deformer::disassemble_node() {
 * Runs deform() on all tracked GeomNodes which had a GeomData
 * instance created during disassemble_node().
 */
-void Deformer::deform_all() {
+void Deformer::deform_all(double time) {
     for (GeomData *geom_data : _vertex_data) {
-        deform(geom_data);
+        deform(geom_data, time);
     }
 }
 
 /*
 * Deforms the vertices of the given GeomData.
 */
-void Deformer::deform(GeomData* geom_data) {
+void Deformer::deform(GeomData* geom_data, double time) {
     GeomVertexRewriter* vertices = geom_data->vertices;
     GeomVertexRewriter* normals = geom_data->normals;
 
     // Default to zero:
     LVecBase3f vertex = LVecBase3f::zero();
 
+    // Reset rows.
+    vertices->set_row(0);
+
     // Iterate through the vertices:
+    size_t index = 0;
     while (!vertices->is_at_end()) {
-        vertex = vertices->get_data3f();
-        update_vertex(vertex);
+        vertex = geom_data->original_vertices[index];
+        update_vertex(vertex, time);
 
         // Set:
         vertices->set_data3f(vertex);
+        index++;
     }
 }
 
@@ -68,4 +80,4 @@ void Deformer::deform(GeomData* geom_data) {
 * Individual vertex deformation. <vertex> is updated in-place.
 * Children should always override this function specifically.
 */
-inline void Deformer::update_vertex(LVecBase3f& vertex) {}
+void Deformer::update_vertex(LVecBase3f& vertex, double time) {}

@@ -8,6 +8,7 @@
 #include "geom.h"
 
 typedef struct GeomData {
+    pvector<LVecBase3f> original_vertices;
     GeomVertexRewriter* vertices;
     GeomVertexRewriter* normals;
 } GeomData;
@@ -15,10 +16,10 @@ typedef struct GeomData {
 class Deformer {
 public:
     inline Deformer(NodePath& nodePath);
-    inline void update_vertex(LVecBase3f& vertex);
+    virtual void update_vertex(LVecBase3f& vertex, double time);
 
-    void deform(GeomData* geom_data);
-    void deform_all();
+    void deform(GeomData* geom_data, double time);
+    void deform_all(double time);
 
 private:
     void disassemble_node();
