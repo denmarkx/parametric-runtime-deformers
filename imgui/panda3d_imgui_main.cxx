@@ -55,7 +55,7 @@ static void setup_render(Panda3DImGui* panda3d_imgui_helper)
 
     EventHandler::get_global_event_handler()->add_hook("window-event", [](const Event*, void* user_data) {
         static_cast<Panda3DImGui*>(user_data)->on_window_resized();
-        }, &panda3d_imgui_helper);
+        }, panda3d_imgui_helper);
 }
 
 static void setup_button(WindowFramework* window_framework, Panda3DImGui* panda3d_imgui_helper)
