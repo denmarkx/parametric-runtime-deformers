@@ -20,13 +20,17 @@ static void render_frame() {
     std::string name;
     float* var_ptr = nullptr;
     double min, max;
+    int i = 0;
 
     for (auto it = func_map.begin(); it != func_map.end(); it++) {
         var_ptr = it->second.first;
         min = it->second.second[0];
         max = it->second.second[1];
+        ImGui::PushID(i);
         ImGui::Text(it->first.c_str());
         ImGui::SliderFloat("", var_ptr, min, max, "%.3f", ImGuiSliderFlags_NoInput);
+        ImGui::PopID();
+        i++;
     }
 
     ImGui::End();
