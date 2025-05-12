@@ -44,10 +44,10 @@ int main() {
     AsyncTask* deform_task = new GenericAsyncTask("deform_task", do_task, deformer);
     taskMgr->add(deform_task);
     window->enable_keyboard();
+    window->setup_trackball();
 
     setup_p3d_imgui(window, render_frame);
 
-    window->setup_trackball();
     framework->main_loop();
     return 0;
 }

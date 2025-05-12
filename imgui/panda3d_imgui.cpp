@@ -99,11 +99,14 @@ private:
 
 // ************************************************************************************************
 
-Panda3DImGui::Panda3DImGui(GraphicsWindow* window, NodePath parent): window_(window)
+Panda3DImGui::Panda3DImGui(WindowFramework* framework, GraphicsWindow* window, NodePath parent): window_(window)
 {
     root_ = parent.attach_new_node("imgui-root", 1000);
 
     context_ = ImGui::CreateContext();
+    _trackball = DCAST(Trackball, framework->get_mouse().find("**/trackball").node());
+    _trackball2Cam = DCAST(Transform2SG, _trackball->get_child(0));
+    _mouse_np = framework->get_mouse();
 
     ImGuiIO& io = ImGui::GetIO();
 
@@ -251,6 +254,28 @@ void Panda3DImGui::on_window_resized(const LVecBase2& size)
     //io.DisplayFramebufferScale;
 }
 
+void Panda3DImGui::disable_camera() {
+    if (_mouse_np.find("**/trackball").is_empty()) {
+        _mouse_np.ls();
+        return;
+    }
+    _trackball_node = _trackball2Cam->get_node();
+    _trackball2Cam->set_node(nullptr);
+
+    // Trackball is still made away of incoming events, but we don't actually want to keep those
+    // when we re-enable the camera.
+    _cam_mat = _trackball->get_mat();
+}
+
+void Panda3DImGui::enable_camera() {
+    // Ignore redundant calls:
+    if (_trackball2Cam->get_node() != nullptr) {
+        return;
+    }
+    _trackball2Cam->set_node(_trackball_node);
+    _trackball->set_mat(_cam_mat);
+}
+
 void Panda3DImGui::on_button_down_or_up(const ButtonHandle& button, bool down)
 {
     if (button == ButtonHandle::none())
@@ -262,6 +287,10 @@ void Panda3DImGui::on_button_down_or_up(const ButtonHandle& button, bool down)
         if (button == MouseButton::one())
         {
             io.MouseDown[0] = down;
+            enable_camera();
+            if (ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow) && down) {
+                disable_camera();
+            }
         }
         else if (button == MouseButton::three())
         {

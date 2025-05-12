@@ -25,6 +25,8 @@
 #pragma once
 
 #include <nodePath.h>
+#include <transform2sg.h>
+#include <windowFramework.h>
 
 class Texture;
 class ButtonMap;
@@ -48,7 +50,7 @@ public:
     };
 
 public:
-    Panda3DImGui(GraphicsWindow* window, NodePath parent);
+    Panda3DImGui(WindowFramework *framework, GraphicsWindow* window, NodePath parent);
     ~Panda3DImGui();
 
     void setup_style(Style style = Style::dark);
@@ -79,10 +81,13 @@ public:
 
 private:
     void setup_font_texture();
+    void disable_camera();
+    void enable_camera();
     NodePath create_geomnode(const GeomVertexData* vdata);
 
     ImGuiContext* context_ = nullptr;
 
+    WPT(WindowFramework) framework_;
     WPT(GraphicsWindow) window_;
     NodePath root_;
     PT(Texture) font_texture_;
@@ -101,6 +106,12 @@ private:
     bool enable_file_drop_ = false;
     std::vector<Filename> dropped_files_;
     LVecBase2 dropped_point_;
+
+    PT(Trackball) _trackball;
+    PT(Transform2SG) _trackball2Cam;
+    PT(PandaNode) _trackball_node;
+    LMatrix4f _cam_mat;
+    NodePath _mouse_np;
 };
 
 // ************************************************************************************************

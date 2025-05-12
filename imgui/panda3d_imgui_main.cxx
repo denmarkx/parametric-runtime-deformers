@@ -27,6 +27,8 @@
 #include <buttonThrower.h>
 #include <mouseWatcher.h>
 #include <pgTop.h>
+#include <mouseButton.h>
+#include <windowFramework.h>
 
 #include "imgui.h"
 
@@ -103,7 +105,7 @@ static void setup_button(WindowFramework* window_framework, Panda3DImGui* panda3
 }
 
 static void setup_p3d_imgui(WindowFramework* framework, void (*frame_func)()) {
-    Panda3DImGui *panda3d_imgui_helper = new Panda3DImGui(framework->get_graphics_window(), framework->get_pixel_2d());
+    Panda3DImGui *panda3d_imgui_helper = new Panda3DImGui(framework, framework->get_graphics_window(), framework->get_pixel_2d());
     panda3d_imgui_helper->setup_style();
     panda3d_imgui_helper->setup_geom();
     panda3d_imgui_helper->setup_shader(Filename("shader"));
