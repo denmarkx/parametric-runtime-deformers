@@ -13,6 +13,8 @@ static AsyncTask::DoneStatus do_task(GenericAsyncTask* task, void* data) {
 }
 
 static void render_frame() {
+    ImGui::SetNextWindowContentSize(ImVec2(250, 0.0));
+    ImGui::Begin("Deformer Options", NULL, ImGuiWindowFlags_AlwaysAutoResize);
     auto func_map = deformer->options.func_map;
 
     std::string name;
@@ -23,8 +25,11 @@ static void render_frame() {
         var_ptr = it->second.first;
         min = it->second.second[0];
         max = it->second.second[1];
-        ImGui::DragFloat("Drags", var_ptr, 0.001F, min, max, "%.3f", ImGuiSliderFlags_NoInput);
+        ImGui::Text(it->first.c_str());
+        ImGui::SliderFloat("", var_ptr, min, max, "%.3f", ImGuiSliderFlags_NoInput);
     }
+
+    ImGui::End();
 }
 
 int main() {
