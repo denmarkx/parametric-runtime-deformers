@@ -1,8 +1,9 @@
 /*
 * Initializer for Deformer Base.
 */
-inline Deformer::Deformer(NodePath& nodePath) {
+inline Deformer::Deformer(NodePath& nodePath, Axis axis) {
     _nodePath = nodePath;
+    _axis = axis;
     disassemble_node();
 }
 
@@ -33,4 +34,18 @@ inline void Deformer::set_other(LPoint3f point) {
 */
 inline LPoint3f Deformer::get_center() {
     return _center;
+}
+
+/*
+* Sets major deformation axis.
+*/
+inline void Deformer::set_axis(Axis axis) {
+    _axis = axis;
+}
+
+/*
+* Returns major deformation axis.
+*/
+inline Axis Deformer::get_axis() const {
+    return _axis;
 }

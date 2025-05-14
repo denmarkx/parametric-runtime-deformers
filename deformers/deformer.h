@@ -26,19 +26,29 @@ typedef struct DeformerOptions {
     std::unordered_map<std::string, std::pair<float*, std::array<double, 2>>> func_map;
 } DeformerOptions;
 
+enum Axis {
+    X,
+    Y,
+    Z,
+};
 
 class Deformer {
 public:
-    inline Deformer(NodePath& nodePath);
+    inline Deformer(NodePath& nodePath, Axis axis=Axis::X);
     virtual void update_vertex(LVecBase3f& vertex, LVecBase3f& tangent, LVecBase3f& binormal, double time);
 
     void deform(GeomData* geom_data, double time);
     void deform_all(double time=0.0);
 
     inline NodePath& get_node_path();
+
     inline void set_other(NodePath& nodePath);
     inline void set_other(LPoint3f point);
+
     inline LPoint3f get_center();
+
+    inline void set_axis(Axis axis);
+    inline Axis get_axis() const;
 
     DeformerOptions options;
 private:
@@ -47,6 +57,7 @@ private:
 private:
     NodePath _nodePath;
     LPoint3f _center;
+    Axis _axis;
 
     pvector<GeomData*> _vertex_data;
 };
