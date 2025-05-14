@@ -5,10 +5,12 @@
 #include "deformers/twistDeformer.h"
 #include "imgui/panda3d_imgui_main.cxx"
 
-TwistDeformer* deformer;
+typedef TwistDeformer TYPE_DEFORMER;
+
+TYPE_DEFORMER* deformer;
 
 static AsyncTask::DoneStatus do_task(GenericAsyncTask* task, void* data) {
-    TwistDeformer* deformer = (TwistDeformer*)data;
+    TYPE_DEFORMER* deformer = (TYPE_DEFORMER*)data;
     deformer->deform_all(0); // task->get_elapsed_time());
     return AsyncTask::DS_cont;
 }
@@ -44,11 +46,12 @@ int main() {
     
     WindowFramework* window = framework->open_window();
 
-    NodePath np = window->load_model(framework->get_models(), "cylinder.egg");
+    NodePath np = window->load_model(framework->get_models(), "teapot.egg");
     np.reparent_to(window->get_render());
 
-    deformer = new TwistDeformer(np);
-    deformer->deform_all(0.0);
+    deformer = new TYPE_DEFORMER(np);
+    deformer->deform_all();
+    deformer->set_other(LPoint3f(-5, 5, 0));
 
     AsyncTaskManager* taskMgr = AsyncTaskManager::get_global_ptr();
     AsyncTask* deform_task = new GenericAsyncTask("deform_task", do_task, deformer);
