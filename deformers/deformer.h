@@ -26,7 +26,7 @@ typedef struct DeformerOptions {
     std::unordered_map<std::string, std::pair<float*, std::array<double, 2>>> func_map;
 } DeformerOptions;
 
-enum Axis {
+enum Axis: size_t {
     X,
     Y,
     Z,
@@ -51,6 +51,10 @@ public:
     inline Axis get_axis() const;
 
     DeformerOptions options;
+
+    size_t _minor_axis_a = Axis::Y;
+    size_t _minor_axis_b = Axis::Z;
+
 private:
     void disassemble_node();
 
@@ -60,6 +64,7 @@ private:
     Axis _axis;
 
     pvector<GeomData*> _vertex_data;
+
 };
 
 #include "deformer.I"

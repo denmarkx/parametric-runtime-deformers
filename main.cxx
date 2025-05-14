@@ -49,7 +49,7 @@ int main() {
     NodePath np = window->load_model(framework->get_models(), "teapot.egg");
     np.reparent_to(window->get_render());
 
-    deformer = new TYPE_DEFORMER(np);
+    deformer = new TYPE_DEFORMER(np, Axis::Z);
     deformer->deform_all();
     deformer->set_other(LPoint3f(-5, 5, 0));
 

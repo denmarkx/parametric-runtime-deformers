@@ -1,7 +1,7 @@
 #include "sineDeformer.h"
 #include "clockObject.h"
 
-SineDeformer::SineDeformer(NodePath& nodePath) : Deformer(nodePath) {
+SineDeformer::SineDeformer(NodePath& nodePath, Axis axis) : Deformer(nodePath, axis) {
     options.func_map = { 
         {"Amplitude", { &_amplitude, {0.0, 5.0} } },
         {"Frequency", { &_frequency, {0.0, 5.0} } },

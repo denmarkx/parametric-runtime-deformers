@@ -4,7 +4,7 @@
 
 class TwistDeformer : public Deformer {
 public:
-    TwistDeformer(NodePath& nodePath);
+    TwistDeformer(NodePath& nodePath, Axis axis=Axis::X);
     virtual void update_vertex(LVecBase3f& vertex, LVecBase3f& tangent, LVecBase3f& binormal, double time);
 
 private:

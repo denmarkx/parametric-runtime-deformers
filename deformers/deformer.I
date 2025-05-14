@@ -3,7 +3,7 @@
 */
 inline Deformer::Deformer(NodePath& nodePath, Axis axis) {
     _nodePath = nodePath;
-    _axis = axis;
+    set_axis(axis);
     disassemble_node();
 }
 
@@ -41,6 +41,22 @@ inline LPoint3f Deformer::get_center() {
 */
 inline void Deformer::set_axis(Axis axis) {
     _axis = axis;
+
+    // Update the minor axis:
+    switch (_axis) {
+        case Axis::X:
+            _minor_axis_a = Axis::Y;
+            _minor_axis_b = Axis::Z;
+            break;
+        case Axis::Y:
+            _minor_axis_a = Axis::X;
+            _minor_axis_b = Axis::Z;
+            break;
+        case Axis::Z:
+            _minor_axis_a = Axis::X;
+            _minor_axis_b = Axis::Y;
+            break;
+    }
 }
 
 /*
