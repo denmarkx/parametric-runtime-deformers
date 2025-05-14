@@ -2,13 +2,14 @@
 #include "pandaFramework.h"
 
 #include "deformers/sineDeformer.h"
+#include "deformers/twistDeformer.h"
 #include "imgui/panda3d_imgui_main.cxx"
 
-SineDeformer* deformer;
+TwistDeformer* deformer;
 
 static AsyncTask::DoneStatus do_task(GenericAsyncTask* task, void* data) {
-    SineDeformer* deformer = (SineDeformer*)data;
-    deformer->deform_all(task->get_elapsed_time());
+    TwistDeformer* deformer = (TwistDeformer*)data;
+    deformer->deform_all(0); // task->get_elapsed_time());
     return AsyncTask::DS_cont;
 }
 
@@ -43,10 +44,10 @@ int main() {
     
     WindowFramework* window = framework->open_window();
 
-    NodePath np = window->load_model(framework->get_models(), "teapot.egg");
+    NodePath np = window->load_model(framework->get_models(), "cylinder.egg");
     np.reparent_to(window->get_render());
 
-    deformer = new SineDeformer(np);
+    deformer = new TwistDeformer(np);
     deformer->deform_all(0.0);
 
     AsyncTaskManager* taskMgr = AsyncTaskManager::get_global_ptr();
