@@ -39,11 +39,11 @@ inline LPoint3f Deformer::get_center() {
 /*
 * Sets major deformation axis.
 */
-inline void Deformer::set_axis(Axis axis) {
-    _axis = axis;
+inline void Deformer::set_axis(Axis new_axis) {
+    axis = new_axis;
 
     // Update the minor axis:
-    switch (_axis) {
+    switch (axis) {
         case Axis::X:
             _minor_axis_a = Axis::Y;
             _minor_axis_b = Axis::Z;
@@ -63,5 +63,5 @@ inline void Deformer::set_axis(Axis axis) {
 * Returns major deformation axis.
 */
 inline Axis Deformer::get_axis() const {
-    return _axis;
+    return axis;
 }

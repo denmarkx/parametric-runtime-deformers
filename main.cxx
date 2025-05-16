@@ -3,9 +3,10 @@
 
 #include "deformers/sineDeformer.h"
 #include "deformers/twistDeformer.h"
+#include "deformers/bendDeformer.h"
 #include "imgui/panda3d_imgui_main.cxx"
 
-typedef TwistDeformer TYPE_DEFORMER;
+typedef SineDeformer TYPE_DEFORMER;
 
 TYPE_DEFORMER* deformer;
 
@@ -22,9 +23,11 @@ static void render_frame() {
 
     std::string name;
     float* var_ptr = nullptr;
+    int* axis_ptr = reinterpret_cast<int*>(&deformer->axis);
     double min, max;
     int i = 0;
 
+    // Function Options (see options.func_map):
     for (auto it = func_map.begin(); it != func_map.end(); it++) {
         var_ptr = it->second.first;
         min = it->second.second[0];
@@ -36,6 +39,14 @@ static void render_frame() {
         i++;
     }
 
+    // Axis:
+    ImGui::Text("Axis");
+    ImGui::RadioButton("X", axis_ptr, 0);
+    ImGui::SameLine();
+    ImGui::RadioButton("Y", axis_ptr, 1);
+    ImGui::SameLine();
+    ImGui::RadioButton("Z", axis_ptr, 2);
+
     ImGui::End();
 }
 
@@ -46,10 +57,10 @@ int main() {
     
     WindowFramework* window = framework->open_window();
 
-    NodePath np = window->load_model(framework->get_models(), "teapot.egg");
+    NodePath np = window->load_model(framework->get_models(), "cylinder.egg");
     np.reparent_to(window->get_render());
 
-    deformer = new TYPE_DEFORMER(np, Axis::Z);
+    deformer = new TYPE_DEFORMER(np, Axis::Y);
     deformer->deform_all();
     deformer->set_other(LPoint3f(-5, 5, 0));
 

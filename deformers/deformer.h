@@ -55,13 +55,14 @@ public:
     size_t _minor_axis_a = Axis::Y;
     size_t _minor_axis_b = Axis::Z;
 
+    Axis axis;
+
 private:
     void disassemble_node();
 
 private:
     NodePath _nodePath;
     LPoint3f _center;
-    Axis _axis;
 
     pvector<GeomData*> _vertex_data;
 
