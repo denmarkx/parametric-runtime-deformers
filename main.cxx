@@ -47,6 +47,7 @@ static void render_frame() {
     ImGui::RadioButton("Y", axis_ptr, 1);
     ImGui::SameLine();
     ImGui::RadioButton("Z", axis_ptr, 2);
+    deformer->set_axis(static_cast<Axis>(*axis_ptr));
 
     ImGui::End();
 }
