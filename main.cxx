@@ -6,7 +6,7 @@
 #include "deformers/bendDeformer.h"
 #include "imgui/panda3d_imgui_main.cxx"
 
-typedef SineDeformer TYPE_DEFORMER;
+typedef BendDeformer TYPE_DEFORMER;
 
 TYPE_DEFORMER* deformer;
 
