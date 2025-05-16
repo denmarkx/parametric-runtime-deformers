@@ -1,5 +1,6 @@
 #include "windowFramework.h"
 #include "pandaFramework.h"
+#include "directionalLight.h"
 
 #include "deformers/sineDeformer.h"
 #include "deformers/twistDeformer.h"
@@ -59,6 +60,11 @@ int main() {
 
     NodePath np = window->load_model(framework->get_models(), "cylinder.egg");
     np.reparent_to(window->get_render());
+
+    DirectionalLight *d_light = new DirectionalLight("light");
+    NodePath d_light_np = window->get_render().attach_new_node(d_light);
+    d_light_np.set_p(-25);
+    window->get_render().set_light(d_light_np);
 
     deformer = new TYPE_DEFORMER(np, Axis::Y);
     deformer->deform_all();
