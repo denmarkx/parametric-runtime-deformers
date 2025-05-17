@@ -17,6 +17,9 @@ inline void BendDeformer::set_axis(Axis new_axis) {
 
     // _bottom and _top are also the bounds of n0.
     options.func_map["Center of Gravity"].second = {_bottom, _top};
+
+    // The bounds of _bend is pi / min, pi / max:
+    options.func_map["Bend"].second = { M_PI / _bottom, M_PI / _top };
 }
 
 void BendDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& tangent, LVecBase3f& binormal, double time) {
@@ -39,8 +42,10 @@ void BendDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& tangent, LVecBa
     if (n <= _bottom) n = _bottom;
     if (n >= _top) n = _top;
 
+    double k = _bend;
+
     // Theta, C, and S:
-    double theta = _bend * (n - _center);
+    double theta = k * (n - _center);
     double c = cos(theta);
     double s = sin(theta);
 
@@ -50,7 +55,7 @@ void BendDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& tangent, LVecBa
     // { ............ + c(y-_top)    : y > y_max
     // ..where z is the minor axis.
     double m = vertex[_minor_axis_b];
-    double N = (-s * (m - (1 / _bend))) + _center;
+    double N = (-s * (m - (1 / k))) + _center;
 
     if (n < _bottom) N += c * (n - _bottom);
     if (n > _top) N += c* (n - _top);
@@ -59,7 +64,7 @@ void BendDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& tangent, LVecBa
     // { c(z-1/k)+1/k                 : y_min <= y <= y_max
     // { ............ + s(y-_bottom)  : y < y_min
     // { ............ + s(y-_top)     : y > y_max
-    double M = (c * (m - (1 / _bend))) + 1 / _bend;
+    double M = (c * (m - (1 / k))) + 1 / k;
 
     if (n < _bottom) M += s * (n - _bottom);
     if (n > _top) M += s * (n - _top);
