@@ -4,7 +4,7 @@
 BendDeformer::BendDeformer(NodePath& nodePath, Axis axis) : Deformer(nodePath, axis) {
     options.func_map = {
         {"Bend", { &_bend, {-2, 2} } },
-        {"test", { &_test, {-3, 3} } },
+        {"Center of Gravity", { &_center, {-1, 1} } },
     };
 }
 
@@ -14,6 +14,9 @@ inline void BendDeformer::set_axis(Axis new_axis) {
     LPoint3f _min, _max;
     get_node_path().calc_tight_bounds(_min, _max);
     _bottom = _min[new_axis]; _top = _max[new_axis];
+
+    // _bottom and _top are also the bounds of n0.
+    options.func_map["Center of Gravity"].second = {_bottom, _top};
 }
 
 void BendDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& tangent, LVecBase3f& binormal, double time) {
@@ -35,7 +38,7 @@ void BendDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& tangent, LVecBa
     if (n >= _top) n = _top;
 
     // Theta, C, and S:
-    double theta = _bend * (n - _test);
+    double theta = _bend * (n - _center);
     double c = cos(theta);
     double s = sin(theta);
 
@@ -45,7 +48,7 @@ void BendDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& tangent, LVecBa
     // { ............ + c(y-_top)    : y > y_max
     // ..where z is the minor axis.
     double m = vertex[_minor_axis_b];
-    double N = (-s * (m - (1 / _bend))) + _test;
+    double N = (-s * (m - (1 / _bend))) + _center;
 
     if (n < _bottom) N += c * (n - _bottom);
     if (n > _top) N += c* (n - _top);

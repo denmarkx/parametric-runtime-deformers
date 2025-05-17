@@ -10,7 +10,7 @@ public:
 
 private:
     float _bend = 1.0;
-    float _test = 0.0;
+    float _center = 0.0;
     float _top = 1.0;
     float _bottom = 0.0;
 };
