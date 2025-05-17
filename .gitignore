@@ -1,6 +1,14 @@
 .vs/
 x64/
+CMakeFiles/
+Release/
 
+CMakeCache.txt
+
+*.cmake
 *.sln
 *.vcxproj*
 *.ini
+*_igate.cxx
+*_module.cxx
+*.in
