@@ -29,6 +29,8 @@ void BendDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& tangent, LVecBa
     * Comment references to y is the same as the major axis.
     */
 
+    if (_bend == 0) _bend = 0.01;
+
     // initial axis piecewise function:
     // { min : y <= min
     // { y   : min < y < max
