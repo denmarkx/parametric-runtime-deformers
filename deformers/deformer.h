@@ -47,7 +47,7 @@ public:
 
     inline LPoint3f get_center();
 
-    inline void set_axis(Axis axis);
+    inline virtual void set_axis(Axis axis);
     inline Axis get_axis() const;
 
     DeformerOptions options;

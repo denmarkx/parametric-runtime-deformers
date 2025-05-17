@@ -25,6 +25,7 @@ static void render_frame() {
     std::string name;
     float* var_ptr = nullptr;
     int* axis_ptr = reinterpret_cast<int*>(&deformer->axis);
+    int old_axis = *axis_ptr;
     double min, max;
     int i = 0;
 
@@ -47,7 +48,9 @@ static void render_frame() {
     ImGui::RadioButton("Y", axis_ptr, 1);
     ImGui::SameLine();
     ImGui::RadioButton("Z", axis_ptr, 2);
-    deformer->set_axis(static_cast<Axis>(*axis_ptr));
+
+    Axis axis = static_cast<Axis>(*axis_ptr);
+    if (axis != old_axis) deformer->set_axis(axis);
 
     ImGui::End();
 }
