@@ -65,42 +65,35 @@ void Deformer::deform_all(double time) {
 void Deformer::deform(GeomData* geom_data, double time) {
     GeomVertexRewriter* vertices = geom_data->vertices;
     GeomVertexRewriter* normals = geom_data->normals;
-    GeomVertexRewriter* tangents = geom_data->tangents;
-    GeomVertexRewriter* binormals = geom_data->binormals;
+    //GeomVertexRewriter* tangents = geom_data->tangents;
+    //GeomVertexRewriter* binormals = geom_data->binormals;
 
     // Default to zero:
     LVecBase3f vertex = LVecBase3f::zero();
     LVecBase3f normal = LVecBase3f::zero();
-    LVecBase3f binormal = LVecBase3f::zero();
-    LVecBase3f tangent = LVecBase3f::zero();
+    //LVecBase3f binormal = LVecBase3f::zero();
+    //LVecBase3f tangent = LVecBase3f::zero();
 
     // Reset rows.
     vertices->set_row(0);
     normals->set_row(0);
-    tangents->set_row(0);
-    binormals->set_row(0);
+    //tangents->set_row(0);
+    //binormals->set_row(0);
 
     // Iterate through the vertices:
     size_t index = 0;
     while (!vertices->is_at_end()) {
         vertex = geom_data->original_vertices[index];
-        if (!tangents->is_at_end()) {
-            tangent = tangents->get_data3f();
-        }
-        if (!binormals->is_at_end()) {
-            binormal = binormals->get_data3f();
-        }
-        update_vertex(vertex, tangent, binormal, time);
+        //if (!tangents->is_at_end()) tangent = tangents->get_data3f();
+        //if (!binormals->is_at_end()) binormal = binormals->get_data3f();
+        if (!normals->is_at_end()) normal = normals->get_data3f();
 
-        // Set:
+        update_vertex(vertex, normal, time);
+
         vertices->set_data3f(vertex);
-        // TODO: normals->set_data3f(tangent.cross(binormal).normalize());
-        if (!tangents->is_at_end()) {
-            tangents->set_data3f(tangent);
-        }
-        if (!binormals->is_at_end()) {
-            binormals->set_data3f(binormal);
-        }
+        if(!normals->is_at_end()) normals->set_data3f(normal);
+        //if (!tangents->is_at_end()) tangents->set_data3f(tangent);
+        //if (!binormals->is_at_end()) binormals->set_data3f(binormal);
         index++;
     }
 }
@@ -109,4 +102,4 @@ void Deformer::deform(GeomData* geom_data, double time) {
 * Individual vertex deformation. <vertex> is updated in-place.
 * Children should always override this function specifically.
 */
-void Deformer::update_vertex(LVecBase3f& vertex, LVecBase3f& tangent, LVecBase3f& binormal, double time) {}
+void Deformer::update_vertex(LVecBase3f& vertex, LVecBase3f& normal, double time) {}

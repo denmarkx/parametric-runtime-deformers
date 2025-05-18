@@ -9,6 +9,6 @@ SineDeformer::SineDeformer(NodePath& nodePath, Axis axis) : Deformer(nodePath, a
     };
 }
 
-void SineDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& tangent, LVecBase3f& binormal, double time) {
+void SineDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& normal, double time) {
     vertex[axis] += sin(_speed+vertex[1] * _frequency) * _amplitude;
 }

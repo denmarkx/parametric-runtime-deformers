@@ -22,7 +22,7 @@ inline void BendDeformer::set_axis(Axis new_axis) {
     options.func_map["Bend"].second = { M_PI / _bottom, M_PI / _top };
 }
 
-void BendDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& tangent, LVecBase3f& binormal, double time) {
+void BendDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& normal, double time) {
     /*
     * Converted into a visual parametric equation here:
     * https://www.desmos.com/3d/jh74yzrget 
