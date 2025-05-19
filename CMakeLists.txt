@@ -32,6 +32,8 @@ set(SOURCES
     deformers/sineDeformer.h
     deformers/twistDeformer.cxx
     deformers/twistDeformer.h
+    deformers/expandDeformer.cxx
+    deformers/expandDeformer.h
 )
 
 if (COMPILE_PYTHON_LIB)
