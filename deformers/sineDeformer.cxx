@@ -1,14 +1,49 @@
 #include "sineDeformer.h"
-#include "clockObject.h"
 
-SineDeformer::SineDeformer(NodePath& nodePath, Axis axis) : Deformer(nodePath, axis) {
+SineDeformer::SineDeformer(NodePath& nodePath, Axis axis, WaveForm wave_form): Deformer(nodePath, axis) {
     options.func_map = { 
         {"Amplitude", { &_amplitude, {0.0, 5.0} } },
         {"Frequency", { &_frequency, {0.0, 5.0} } },
         {"Time", { &_speed, {1.0, 10.0} } },
     };
+    set_wave_form(WaveForm::SQUARE);
 }
 
 void SineDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& normal, double time) {
-    vertex[axis] += sin(_speed+vertex[1] * _frequency) * _amplitude;
+    // SIN:
+    double wave = sin(_speed + vertex[1] * _frequency) * _amplitude;
+
+    // SQUARE: (sgn(wave))
+    if (_wave_form == WaveForm::SQUARE) {
+        wave = sgn(wave);
+    }
+
+    vertex[axis] += wave;
+
+}
+
+/*
+* Returns -1, 0, or 1 depending on the sign of x.
+* Equivalent to sgn(x) in math notation.
+*
+* { -1   x < 0
+* { 0    x = 0
+* { 1    x > 0
+*/
+inline int SineDeformer::sgn(double x) {
+    return (0 < x) - (x < 0);
+}
+
+/*
+* Sets the WaveForm of the deformer.
+*/
+inline void SineDeformer::set_wave_form(WaveForm wave_form) {
+    _wave_form = wave_form;
+}
+
+/*
+* Returns the current WaveForm.
+*/
+inline WaveForm SineDeformer::get_wave_form(WaveForm wave_form) {
+    return _wave_form;
 }
