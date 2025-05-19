@@ -11,7 +11,7 @@ SineDeformer::SineDeformer(NodePath& nodePath, Axis axis, WaveForm wave_form): D
 
 void SineDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& normal, double time) {
     // Base:
-    double wave = sin(_speed + vertex[1] * _frequency);
+    double wave = sin(_speed + vertex[_minor_axis_a] * _frequency);
 
     // SIN / SQUARE:
     if (_wave_form == WaveForm::SINE || _wave_form == WaveForm::SQUARE) {

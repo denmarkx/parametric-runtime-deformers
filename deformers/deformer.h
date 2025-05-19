@@ -1,11 +1,6 @@
 #ifndef DEFORMER_H
 #define DEFORMER_H
 
-#define M_PI 3.14159265358979323846
-#define m_verify_axis(axis, s) \
-    if (axis < 0 || axis > 2) surface_deformers_cat.error() << s \
-    << ": Invalid axis (" << axis << ") given.\n"; return;
-
 #include "geomVertexRewriter.h"
 #include "geomVertexData.h"
 #include "geomNode.h"
@@ -16,6 +11,13 @@
 
 #include <unordered_map>
 #include <array>
+
+#define M_PI 3.14159265358979323846
+#define m_verify_axis(axis, s) {                                       \
+    if ((axis < 0) || (axis > 2))                                      \
+        std::cout << s << ": Invalid axis (" << axis << ") given.\n";  \
+        return;                                                        \
+}
 
 typedef struct GeomData {
     pvector<LVecBase3f> original_vertices;

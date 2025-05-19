@@ -5,9 +5,10 @@
 #include "deformers/sineDeformer.h"
 #include "deformers/twistDeformer.h"
 #include "deformers/bendDeformer.h"
+#include "deformers/expandDeformer.h"
 #include "imgui/panda3d_imgui_main.cxx"
 
-typedef BendDeformer TYPE_DEFORMER;
+typedef SineDeformer TYPE_DEFORMER;
 
 TYPE_DEFORMER* deformer;
 
@@ -17,6 +18,22 @@ static AsyncTask::DoneStatus do_task(GenericAsyncTask* task, void* data) {
     return AsyncTask::DS_cont;
 }
 
+void create_axis_button(Axis &axis, const char* name, int imgui_id) {
+    int *axis_ptr = reinterpret_cast<int*>(&axis);
+    int old_axis = *axis_ptr;
+
+    ImGui::PushID(imgui_id);
+    ImGui::Text(name);
+    ImGui::RadioButton("X", axis_ptr, 0);
+    ImGui::SameLine();
+    ImGui::RadioButton("Y", axis_ptr, 1);
+    ImGui::SameLine();
+    ImGui::RadioButton("Z", axis_ptr, 2);
+    ImGui::PopID();
+
+    axis = static_cast<Axis>(*axis_ptr);
+}
+
 static void render_frame() {
     ImGui::SetNextWindowContentSize(ImVec2(250, 0.0));
     ImGui::Begin("Deformer Options", NULL, ImGuiWindowFlags_AlwaysAutoResize);
@@ -24,8 +41,6 @@ static void render_frame() {
 
     std::string name;
     float* var_ptr = nullptr;
-    int* axis_ptr = reinterpret_cast<int*>(&deformer->axis);
-    int old_axis = *axis_ptr;
     double min, max;
     int i = 0;
 
@@ -41,16 +56,16 @@ static void render_frame() {
         i++;
     }
 
-    // Axis:
-    ImGui::Text("Axis");
-    ImGui::RadioButton("X", axis_ptr, 0);
-    ImGui::SameLine();
-    ImGui::RadioButton("Y", axis_ptr, 1);
-    ImGui::SameLine();
-    ImGui::RadioButton("Z", axis_ptr, 2);
+    create_axis_button(deformer->axis, "Major Axis", 0);
+    create_axis_button(deformer->_minor_axis_a, "Minor Axis A", 1);
+    create_axis_button(deformer->_minor_axis_b, "Minor Axis B", 2);
 
-    Axis axis = static_cast<Axis>(*axis_ptr);
-    if (axis != old_axis) deformer->set_axis(axis);
+    static bool auto_manage_minor_axes = true;
+    ImGui::Checkbox("Manage Minor Axes Automatically?", &auto_manage_minor_axes);
+
+    if (auto_manage_minor_axes) {
+        deformer->set_axis(deformer->axis);
+    }
 
     ImGui::End();
 }
@@ -62,7 +77,7 @@ int main() {
     
     WindowFramework* window = framework->open_window();
 
-    NodePath np = window->load_model(framework->get_models(), "cylinder.egg");
+    NodePath np = window->load_model(framework->get_models(), "teapot.egg");
     np.reparent_to(window->get_render());
 
     DirectionalLight *d_light = new DirectionalLight("light");
