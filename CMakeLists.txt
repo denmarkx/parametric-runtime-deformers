@@ -23,6 +23,8 @@ set(P3D_LIBS
 
 # Common sources from Interrogate Lib and full C++ program.
 set(SOURCES
+    deformers/config_deformer.cxx
+    deformers/config_deformer.h
     deformers/deformer.cxx
     deformers/deformer.h
     deformers/deformer.I
@@ -41,12 +43,6 @@ if (COMPILE_PYTHON_LIB)
     set (INTERROGATE_FILES 
         surface_deformers_igate.cxx
         surface_deformers_module.cxx
-    )
-
-    # Extra Sources:
-    list(APPEND SOURCES
-        deformers/config_deformer.cxx
-        deformers/config_deformer.h
     )
 else()
     # IMGui Files:

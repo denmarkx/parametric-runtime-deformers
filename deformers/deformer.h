@@ -2,6 +2,9 @@
 #define DEFORMER_H
 
 #define M_PI 3.14159265358979323846
+#define m_verify_axis(axis, s) \
+    if (axis < 0 || axis > 2) surface_deformers_cat.error() << s \
+    << ": Invalid axis (" << axis << ") given.\n"; return;
 
 #include "geomVertexRewriter.h"
 #include "geomVertexData.h"
@@ -9,6 +12,7 @@
 #include "nodePath.h"
 #include "geom.h"
 #include "boundingSphere.h"
+#include "config_deformer.h"
 
 #include <unordered_map>
 #include <array>
@@ -50,11 +54,18 @@ public:
     inline virtual void set_axis(Axis axis);
     inline Axis get_axis() const;
 
+    inline virtual void set_major_axis(Axis axis);
+
+    inline virtual void set_minor_axis_a(Axis minor_axis_a);
+    inline Axis get_minor_axis_a() const;
+
+    inline virtual void set_minor_axis_b(Axis minor_axis_b);
+    inline Axis get_minor_axis_b() const;
+
     DeformerOptions options;
 
-    size_t _minor_axis_a = Axis::Y;
-    size_t _minor_axis_b = Axis::Z;
-
+    Axis _minor_axis_a = Axis::Y;
+    Axis _minor_axis_b = Axis::Z;
     Axis axis;
 
 private:
