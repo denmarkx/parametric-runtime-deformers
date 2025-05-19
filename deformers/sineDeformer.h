@@ -5,6 +5,7 @@
 enum WaveForm {
     SINE,
     SQUARE,
+    TRIANGLE,
 };
 
 class SineDeformer : public Deformer {

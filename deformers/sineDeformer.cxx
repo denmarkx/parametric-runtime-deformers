@@ -6,17 +6,28 @@ SineDeformer::SineDeformer(NodePath& nodePath, Axis axis, WaveForm wave_form): D
         {"Frequency", { &_frequency, {0.0, 5.0} } },
         {"Time", { &_speed, {1.0, 10.0} } },
     };
-    set_wave_form(WaveForm::SQUARE);
+    set_wave_form(wave_form);
 }
 
 void SineDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& normal, double time) {
-    // SIN:
-    double wave = sin(_speed + vertex[1] * _frequency) * _amplitude;
+    // Base:
+    double wave = sin(_speed + vertex[1] * _frequency);
 
-    // SQUARE: (sgn(wave))
+    // SIN / SQUARE:
+    if (_wave_form == WaveForm::SINE || _wave_form == WaveForm::SQUARE) {
+        wave *= _amplitude;
+    }
+
+    // SQUARE: (sgn(f(x)))
     if (_wave_form == WaveForm::SQUARE) {
         wave = sgn(wave);
     }
+
+    // TRIANGLE: arcsin(f(x))
+    if (_wave_form == WaveForm::TRIANGLE) {
+        wave = asin(wave) * _amplitude;
+    }
+
 
     vertex[axis] += wave;
 
