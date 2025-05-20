@@ -7,7 +7,7 @@ option(COMPILE_PYTHON_LIB "Compile as a library using interrogate." ON)
 
 # Python:
 if (COMPILE_PYTHON_LIB)
-    find_package(Python COMPONENTS Interpreter Development)
+    find_package(Python COMPONENTS Interpreter Development REQUIRED)
 endif()
 
 # Panda3D:
@@ -38,13 +38,7 @@ set(SOURCES
     deformers/expandDeformer.h
 )
 
-if (COMPILE_PYTHON_LIB)
-    # Interrogate Files:
-    set (INTERROGATE_FILES 
-        surface_deformers_igate.cxx
-        surface_deformers_module.cxx
-    )
-else()
+if (NOT COMPILE_PYTHON_LIB)
     # IMGui Files:
     set (IMGUI_FILES
         imgui/imconfig.h
@@ -84,22 +78,8 @@ endif()
 if (COMPILE_PYTHON_LIB)
     add_library(surface_deformers SHARED ${SOURCES})
 
-    # Interrogate Module:
-    add_custom_command(
-        TARGET surface_deformers
-        COMMAND interrogate_module
-            -python-native
-            -oc surface_deformers_module.cxx
-            -library surface_deformers
-            -module surface_deformers
-            surface_deformers.in
-        COMMENT "INTERROGATE MODULE"
-    )
-
     # Interrogate:
-    add_custom_command(
-        TARGET surface_deformers
-        PRE_BUILD 
+    execute_process(
         COMMAND interrogate
             -D__inline
             -DCPPPARSER
@@ -137,7 +117,22 @@ if (COMPILE_PYTHON_LIB)
             -D__far
             -D__stdcall
             ${SOURCES}
-        COMMENT "INTERROGATE"
+    )
+
+    # Interrogate Module:
+    execute_process(
+        COMMAND interrogate_module
+            -python-native
+            -oc surface_deformers_module.cxx
+            -library surface_deformers
+            -module surface_deformers
+            surface_deformers.in
+    )
+
+    # Set module and igate file after we run interrogate:
+    set (INTERROGATE_FILES 
+        surface_deformers_igate.cxx
+        surface_deformers_module.cxx
     )
 
     target_sources(surface_deformers PUBLIC ${INTERROGATE_FILES})
