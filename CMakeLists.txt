@@ -3,7 +3,10 @@ project(surface_deformers)
 
 # Either Python or CXX build:
 # Python will use interrogate, CXX will build everything from main.
-option(COMPILE_PYTHON_LIB "Compile as a library using interrogate." ON)
+option(COMPILE_PYTHON_LIB "Compile as a library using interrogate." OFF)
+
+# CXX Lib:
+option(COMPILE_CXX_LIB "Compile as a C++ library." OFF)
 
 # Python:
 if (COMPILE_PYTHON_LIB)
@@ -38,7 +41,7 @@ set(SOURCES
     deformers/expandDeformer.h
 )
 
-if (NOT COMPILE_PYTHON_LIB)
+if (NOT COMPILE_PYTHON_LIB AND NOT COMPILE_CXX_LIB)
     # IMGui Files:
     set (IMGUI_FILES
         imgui/imconfig.h
@@ -65,7 +68,7 @@ include_directories(${PANDA}/lib)
 
 if (COMPILE_PYTHON_LIB)
     include_directories(${Python_INCLUDE_DIRS})
-else()
+elseif(COMPILE_CXX_LIB)
     include_directories(imgui)
 endif()
 
@@ -138,6 +141,9 @@ if (COMPILE_PYTHON_LIB)
     target_sources(surface_deformers PUBLIC ${INTERROGATE_FILES})
     set_target_properties(surface_deformers PROPERTIES SUFFIX ".pyd")
     target_link_libraries(surface_deformers ${P3D_LIBS} ${Python_LIBRARIES})
+elseif(COMPILE_CXX_LIB)
+    add_library(surface_deformers SHARED ${SOURCES})
+    target_link_libraries(surface_deformers ${P3D_LIBS})
 else()
     # C++ Program
     add_executable(surface_deformers main.cxx ${SOURCES} ${IMGUI_FILES})
