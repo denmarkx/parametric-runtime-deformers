@@ -24,7 +24,7 @@ typedef struct GeomData {
 
 typedef struct DeformerOptions {
     // Name, Ptr->Var, [min, max]
-    std::unordered_map<std::string, std::pair<float*, std::array<double, 2>>> func_map;
+    std::unordered_map<std::string, std::pair<float*, std::vector<double>>> func_map;
 } DeformerOptions;
 
 enum Axis: size_t {
