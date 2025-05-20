@@ -20,7 +20,6 @@ static AsyncTask::DoneStatus do_task(GenericAsyncTask* task, void* data) {
 
 void create_axis_button(Axis &axis, const char* name, int imgui_id) {
     int *axis_ptr = reinterpret_cast<int*>(&axis);
-    int old_axis = *axis_ptr;
 
     ImGui::PushID(imgui_id);
     ImGui::Text(name);
@@ -56,6 +55,7 @@ static void render_frame() {
         i++;
     }
 
+    Axis original_major = deformer->axis;
     create_axis_button(deformer->axis, "Major Axis", 0);
     create_axis_button(deformer->_minor_axis_a, "Minor Axis A", 1);
     create_axis_button(deformer->_minor_axis_b, "Minor Axis B", 2);
@@ -63,7 +63,7 @@ static void render_frame() {
     static bool auto_manage_minor_axes = true;
     ImGui::Checkbox("Manage Minor Axes Automatically?", &auto_manage_minor_axes);
 
-    if (auto_manage_minor_axes) {
+    if (auto_manage_minor_axes && (original_major != deformer->axis)) {
         deformer->set_axis(deformer->axis);
     }
 

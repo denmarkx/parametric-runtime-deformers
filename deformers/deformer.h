@@ -13,11 +13,6 @@
 #include <array>
 
 #define M_PI 3.14159265358979323846
-#define m_verify_axis(axis, s) {                                       \
-    if ((axis < 0) || (axis > 2))                                      \
-        std::cout << s << ": Invalid axis (" << axis << ") given.\n";  \
-        return;                                                        \
-}
 
 typedef struct GeomData {
     pvector<LVecBase3f> original_vertices;
@@ -68,10 +63,11 @@ public:
 
     Axis _minor_axis_a = Axis::Y;
     Axis _minor_axis_b = Axis::Z;
-    Axis axis;
+    Axis axis = Axis::X;
 
 private:
     void disassemble_node();
+    inline bool validate_axis(Axis x, const char* f_name) const;
 
 private:
     NodePath _nodePath;
