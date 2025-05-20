@@ -8,20 +8,37 @@ option(COMPILE_PYTHON_LIB "Compile as a library using interrogate." OFF)
 # CXX Lib:
 option(COMPILE_CXX_LIB "Compile as a C++ library." OFF)
 
-# Python:
+# Panda3D:
+# todo: pip & unix paths..
+file(GLOB PANDA_GLOB "C:/panda*")
+
+# Ensure P3D exists:
+list(LENGTH PANDA_GLOB PANDA_GLOB_LEN)
+if (PANDA_GLOB_LEN EQUAL 0)
+    message(FATAL_ERROR "Could not find a matching Panda3D location. Please set -DPANDA_DIR=<panda3d root>.")
+endif()
+
+# Get last entry
+list(GET PANDA_GLOB -1 PANDA_DIR)
+message(STATUS "Found Panda3D SDK: ${PANDA_DIR}")
+
+# Python (within P3D) (Python Lib only):
 if (COMPILE_PYTHON_LIB)
+    if (EXISTS "${PANDA_DIR}/python")
+        set(Python_ROOT_DIR "${PANDA_DIR}/python")
+    endif()
+
+    # Ensure we can actually find Python:
     find_package(Python COMPONENTS Interpreter Development REQUIRED)
 endif()
 
-# Panda3D:
-set(PANDA "C:\\panda3d-engine" CACHE STRING "Panda3D Root Directory")
 set(P3D_LIBS
-    ${PANDA}/lib/libp3framework.lib
-    ${PANDA}/lib/libpanda.lib
-    ${PANDA}/lib/libpandafx.lib
-    ${PANDA}/lib/libpandaexpress.lib
-    ${PANDA}/lib/libp3dtool.lib
-    ${PANDA}/lib/libp3dtoolconfig.lib
+    ${PANDA_DIR}/lib/libp3framework.lib
+    ${PANDA_DIR}/lib/libpanda.lib
+    ${PANDA_DIR}/lib/libpandafx.lib
+    ${PANDA_DIR}/lib/libpandaexpress.lib
+    ${PANDA_DIR}/lib/libp3dtool.lib
+    ${PANDA_DIR}/lib/libp3dtoolconfig.lib
 )
 
 # Common sources from Interrogate Lib and full C++ program.
@@ -63,8 +80,8 @@ endif()
 
 
 include_directories(deformers)
-include_directories(${PANDA}/include)
-include_directories(${PANDA}/lib)
+include_directories(${PANDA_DIR}/include)
+include_directories(${PANDA_DIR}/lib)
 
 if (COMPILE_PYTHON_LIB)
     include_directories(${Python_INCLUDE_DIRS})
@@ -102,9 +119,9 @@ if (COMPILE_PYTHON_LIB)
             -refcount
             -assert
             -python-native
-            -S${PANDA}/include/parser-inc
-            -S${PANDA}/include
-            -I${PANDA}/include
+            -S${PANDA_DIR}/include/parser-inc
+            -S${PANDA_DIR}/include
+            -I${PANDA_DIR}/include
             -Ideformers/
             -srcdir .
             -oc surface_deformers_igate.cxx
