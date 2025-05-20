@@ -1,5 +1,9 @@
 #include "sineDeformer.h"
 
+/*
+* Periodic sine wave deformation. Available wave forms are SINE, SQUARE, and
+* TRIANGLE. Square and Triangle waves are derived off of the base sine wave formula.
+*/
 SineDeformer::SineDeformer(NodePath& nodePath, Axis axis, WaveForm wave_form): Deformer(nodePath, axis) {
     options.func_map = { 
         {"Amplitude", { &_amplitude, {0.0, 5.0} } },
@@ -9,6 +13,10 @@ SineDeformer::SineDeformer(NodePath& nodePath, Axis axis, WaveForm wave_form): D
     set_wave_form(wave_form);
 }
 
+/*
+* Updates the vertices. The second minor axis has no affect.
+* Simple base formula is: vertex[major_axis] += sin(vertex[minor_axis_a])
+*/
 void SineDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& normal, double time) {
     // Base:
     double wave = sin(_speed + vertex[_minor_axis_a] * _frequency);

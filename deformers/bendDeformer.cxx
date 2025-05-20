@@ -1,6 +1,9 @@
 #include "bendDeformer.h"
 #include "clockObject.h"
 
+/*
+* Bends an object left or right.
+*/
 BendDeformer::BendDeformer(NodePath& nodePath, Axis axis) : Deformer(nodePath, axis) {
     options.func_map = {
         {"Bend", { &_bend, {-2, 2} } },
@@ -8,6 +11,10 @@ BendDeformer::BendDeformer(NodePath& nodePath, Axis axis) : Deformer(nodePath, a
     };
 }
 
+/*
+* Recalculates the minimum and maximum of the mesh and modifies
+* the thresholds for the function map.
+*/
 inline void BendDeformer::set_axis(Axis new_axis) {
     Deformer::set_axis(new_axis);
 
@@ -22,6 +29,9 @@ inline void BendDeformer::set_axis(Axis new_axis) {
     options.func_map["Bend"].second = { M_PI / _bottom, M_PI / _top };
 }
 
+/*
+* Updates vertices per time. The second minor axis has no effect.
+*/
 void BendDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& normal, double time) {
     /*
     * Converted into a visual parametric equation here:
@@ -54,7 +64,7 @@ void BendDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& normal, double 
     // { ............ + c(y-_bottom) : y < y_min
     // { ............ + c(y-_top)    : y > y_max
     // ..where z is the minor axis.
-    double m = vertex[_minor_axis_b];
+    double m = vertex[_minor_axis_a];
     double N = (-s * (m - (1 / k))) + _center;
 
     if (n < _bottom) N += c * (n - _bottom);
@@ -70,6 +80,6 @@ void BendDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& normal, double 
     if (n > _top) M += s * (n - _top);
 
     vertex[axis] = N;
-    vertex[_minor_axis_b] = M;
+    vertex[_minor_axis_a] = M;
 }
 
