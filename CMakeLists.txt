@@ -26,6 +26,8 @@ message(STATUS "Found Panda3D SDK: ${PANDA_DIR}")
 if (COMPILE_PYTHON_LIB)
     if (EXISTS "${PANDA_DIR}/python")
         set(Python_ROOT_DIR "${PANDA_DIR}/python")
+        set(Python_FIND_REGISTRY NEVER)
+        set(Python_FIND_STRATEGY LOCATION)
     endif()
 
     # Ensure we can actually find Python:
