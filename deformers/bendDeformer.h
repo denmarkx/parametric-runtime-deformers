@@ -4,7 +4,7 @@
 
 class BendDeformer : public Deformer {
 PUBLISHED:
-    BendDeformer(NodePath& nodePath, Axis axis=Axis::X);
+    BendDeformer(NodePath& nodePath = NodePath(), Axis axis=Axis::X);
     inline virtual void set_axis(Axis new_axis);
 
 public:

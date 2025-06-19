@@ -33,11 +33,12 @@ enum Axis: size_t {
 
 class Deformer {
 PUBLISHED:
-    inline Deformer(NodePath& nodePath, Axis axis = Axis::X);
+    inline Deformer(NodePath& nodePath = NodePath(), Axis axis = Axis::X);
 
     void deform(GeomData* geom_data, double time);
     void deform_all(double time = 0.0);
 
+    inline void set_node_path(NodePath& nodePath);
     inline NodePath& get_node_path();
 
     inline void set_other(NodePath& nodePath);

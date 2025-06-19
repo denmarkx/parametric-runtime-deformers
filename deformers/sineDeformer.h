@@ -10,7 +10,7 @@ PUBLISHED:
         TRIANGLE,
     };
 
-    SineDeformer(NodePath& nodePath, Axis axis = Axis::X, WaveForm wave_form = WaveForm::SINE);
+    SineDeformer(NodePath& nodePath = NodePath(), Axis axis = Axis::X, WaveForm wave_form = WaveForm::SINE);
     inline void set_wave_form(WaveForm wave_form);
     inline WaveForm get_wave_form();
 

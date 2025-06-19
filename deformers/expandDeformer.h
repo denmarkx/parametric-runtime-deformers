@@ -3,7 +3,7 @@
 
 class ExpandDeformer : public Deformer {
 PUBLISHED:
-    ExpandDeformer(NodePath& nodePath, Axis axis = Axis::X);
+    ExpandDeformer(NodePath& nodePath = NodePath(), Axis axis = Axis::X);
 
 public:
     virtual void update_vertex(LVecBase3f& vertex, LVecBase3f& normal, double time);

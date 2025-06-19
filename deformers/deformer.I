@@ -2,9 +2,18 @@
 * Initializer for Deformer Base.
 */
 inline Deformer::Deformer(NodePath& nodePath, Axis axis) {
-    _nodePath = nodePath;
     set_axis(axis);
-    disassemble_node();
+    set_node_path(nodePath);
+}
+
+/*
+* Sets the NodePath used for deformation and disassembles down to the vertices.
+*/
+inline void Deformer::set_node_path(NodePath& nodePath) {
+    _nodePath = nodePath;
+    if (!_nodePath.is_empty()) {
+        disassemble_node();
+    }
 }
 
 /*
