@@ -2,8 +2,12 @@
 x64/
 CMakeFiles/
 Release/
+Debug/
+.cache
 
 CMakeCache.txt
+compile_commands.json
+Makefile
 
 *.cmake
 *.sln

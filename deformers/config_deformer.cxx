@@ -2,7 +2,7 @@
 #include "dconfig.h"
 
 Configure(config_surface_deformers);
-NotifyCategoryDef(surface_deformers , "");
+NotifyCategoryDef(surface_deformers, "");
 
 ConfigureFn(config_surface_deformers) {
   init_libsurfacedeformers();
