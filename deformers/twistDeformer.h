@@ -3,8 +3,10 @@
 #include "deformer.h"
 
 class TwistDeformer : public Deformer {
+PUBLISHED:
+    TwistDeformer(NodePath& nodePath, Axis axis = Axis::X);
+
 public:
-    TwistDeformer(NodePath& nodePath, Axis axis=Axis::X);
     virtual void update_vertex(LVecBase3f& vertex, LVecBase3f& normals, double time);
 
 private:

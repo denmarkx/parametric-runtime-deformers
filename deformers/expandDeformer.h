@@ -2,8 +2,10 @@
 #include "deformer.h"
 
 class ExpandDeformer : public Deformer {
-public:
+PUBLISHED:
     ExpandDeformer(NodePath& nodePath, Axis axis = Axis::X);
+
+public:
     virtual void update_vertex(LVecBase3f& vertex, LVecBase3f& normal, double time);
 
 private:

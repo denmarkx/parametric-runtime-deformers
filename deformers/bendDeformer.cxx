@@ -48,7 +48,7 @@ void BendDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& normals, double
     // { min : y <= min
     // { y   : min < y < max
     // { max : y >= max
-    double n = vertex[axis];
+    double n = vertex[get_axis()];
     if (n <= _bottom) n = _bottom;
     if (n >= _top) n = _top;
 
@@ -64,7 +64,7 @@ void BendDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& normals, double
     // { ............ + c(y-_bottom) : y < y_min
     // { ............ + c(y-_top)    : y > y_max
     // ..where z is the minor axis.
-    double m = vertex[_minor_axis_a];
+    double m = vertex[get_minor_axis_a()];
     double N = (-s * (m - (1 / k))) + _center;
 
     if (n < _bottom) N += c * (n - _bottom);
@@ -79,7 +79,7 @@ void BendDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& normals, double
     if (n < _bottom) M += s * (n - _bottom);
     if (n > _top) M += s * (n - _top);
 
-    vertex[axis] = N;
-    vertex[_minor_axis_a] = M;
+    vertex[get_axis()] = N;
+    vertex[get_minor_axis_a()] = M;
 }
 

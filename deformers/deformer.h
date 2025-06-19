@@ -32,12 +32,11 @@ enum Axis: size_t {
 };
 
 class Deformer {
-public:
-    inline Deformer(NodePath& nodePath, Axis axis=Axis::X);
-    virtual void update_vertex(LVecBase3f& vertex, LVecBase3f& normals, double time);
+PUBLISHED:
+    inline Deformer(NodePath& nodePath, Axis axis = Axis::X);
 
     void deform(GeomData* geom_data, double time);
-    void deform_all(double time=0.0);
+    void deform_all(double time = 0.0);
 
     inline NodePath& get_node_path();
 
@@ -57,6 +56,9 @@ public:
     inline virtual void set_minor_axis_b(Axis minor_axis_b);
     inline Axis get_minor_axis_b() const;
 
+public:
+    virtual void update_vertex(LVecBase3f& vertex, LVecBase3f& normals, double time);
+
     DeformerOptions options;
 
     Axis _minor_axis_a = Axis::Y;
@@ -67,12 +69,10 @@ private:
     void disassemble_node();
     inline bool validate_axis(Axis x, const char* f_name) const;
 
-private:
     NodePath _nodePath;
     LPoint3f _center;
 
     pvector<GeomData*> _vertex_data;
-
 };
 
 #include "deformer.I"

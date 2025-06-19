@@ -3,10 +3,12 @@
 #include "deformer.h"
 
 class BendDeformer : public Deformer {
-public:
+PUBLISHED:
     BendDeformer(NodePath& nodePath, Axis axis=Axis::X);
-    virtual void update_vertex(LVecBase3f& vertex, LVecBase3f& normals, double time);
     inline virtual void set_axis(Axis new_axis);
+
+public:
+    virtual void update_vertex(LVecBase3f& vertex, LVecBase3f& normals, double time);
 
 private:
     float _bend = 1.0;
