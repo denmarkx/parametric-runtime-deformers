@@ -7,7 +7,7 @@ TwistDeformer::TwistDeformer(NodePath& nodePath, Axis axis) : Deformer(nodePath,
     };
 }
 
-void TwistDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& normal, double time) {
+void TwistDeformer::update_vertex(LVecBase3f& vertex, double time) {
     double theta = _twist * vertex[get_axis()];
     double x = vertex[_minor_axis_a] + get_center()[_minor_axis_a];
     double y = vertex[_minor_axis_b] + get_center()[_minor_axis_b];

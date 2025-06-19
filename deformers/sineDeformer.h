@@ -5,7 +5,7 @@
 class SineDeformer : public Deformer {
 public:
     SineDeformer(NodePath& nodePath, Axis axis = Axis::X);
-    virtual void update_vertex(LVecBase3f& vertex, LVecBase3f& normal, double time);
+    virtual void update_vertex(LVecBase3f& vertex, double time);
 
 private:
     float _frequency = 1.0;

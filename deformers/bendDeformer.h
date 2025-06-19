@@ -5,7 +5,7 @@
 class BendDeformer : public Deformer {
 public:
     BendDeformer(NodePath& nodePath, Axis axis=Axis::X);
-    virtual void update_vertex(LVecBase3f& vertex, LVecBase3f& normal, double time);
+    virtual void update_vertex(LVecBase3f& vertex, double time);
     inline virtual void set_axis(Axis new_axis);
 
 private:

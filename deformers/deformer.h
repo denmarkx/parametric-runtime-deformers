@@ -35,7 +35,7 @@ enum Axis: size_t {
 class Deformer {
 public:
     inline Deformer(NodePath& nodePath, Axis axis=Axis::X);
-    virtual void update_vertex(LVecBase3f& vertex, LVecBase3f& normal, double time);
+    virtual void update_vertex(LVecBase3f& vertex, double time);
 
     void deform(GeomData* geom_data, double time);
     void deform_all(double time=0.0);
