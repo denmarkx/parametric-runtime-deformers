@@ -11,7 +11,7 @@ enum WaveForm {
 class SineDeformer : public Deformer {
 public:
     SineDeformer(NodePath& nodePath, Axis axis = Axis::X, WaveForm wave_form = WaveForm::SINE);
-    virtual void update_vertex(LVecBase3f& vertex, double time);
+    virtual void update_vertex(LVecBase3f& vertex, LVecBase3f& normals, double time);
     WaveForm _wave_form;
     void set_wave_form(WaveForm wave_form);
     WaveForm get_wave_form(WaveForm wave_form);

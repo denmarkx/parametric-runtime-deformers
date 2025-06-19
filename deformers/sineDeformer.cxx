@@ -17,7 +17,7 @@ SineDeformer::SineDeformer(NodePath& nodePath, Axis axis, WaveForm wave_form): D
 * Updates the vertices. The second minor axis has no affect.
 * Simple base formula is: vertex[major_axis] += sin(vertex[minor_axis_a])
 */
-void SineDeformer::update_vertex(LVecBase3f& vertex, double time) {
+void SineDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& normals, double time) {
     vertex[axis] += sin(_speed+vertex[1] * _frequency) * _amplitude;
     // Base:
     double wave = sin(_speed + vertex[_minor_axis_a] * _frequency);

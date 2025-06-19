@@ -14,7 +14,7 @@ TwistDeformer::TwistDeformer(NodePath& nodePath, Axis axis) : Deformer(nodePath,
 * Updates the vertices. The major axis is accounted into the twist angle. The 
 * two manipulated vertex axes are both minor ones.
 */
-void TwistDeformer::update_vertex(LVecBase3f& vertex, double time) {
+void TwistDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& normals, double time) {
     double theta = _twist * vertex[get_axis()];
     double x = vertex[_minor_axis_a] + get_center()[_minor_axis_a];
     double y = vertex[_minor_axis_b] + get_center()[_minor_axis_b];

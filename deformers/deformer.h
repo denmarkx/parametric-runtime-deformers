@@ -18,8 +18,6 @@ typedef struct GeomData {
     pvector<LVecBase3f> original_vertices;
     GeomVertexRewriter* vertices;
     GeomVertexRewriter* normals;
-    GeomVertexRewriter* tangents;
-    GeomVertexRewriter* binormals;
 } GeomData;
 
 typedef struct DeformerOptions {
@@ -36,7 +34,7 @@ enum Axis: size_t {
 class Deformer {
 public:
     inline Deformer(NodePath& nodePath, Axis axis=Axis::X);
-    virtual void update_vertex(LVecBase3f& vertex, double time);
+    virtual void update_vertex(LVecBase3f& vertex, LVecBase3f& normals, double time);
 
     void deform(GeomData* geom_data, double time);
     void deform_all(double time=0.0);

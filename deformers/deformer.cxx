@@ -22,7 +22,7 @@ void Deformer::disassemble_node() {
 
             // ..we'll actually hold onto two of the rewriter instances.
             // one for the vertices
-            rewriter = new GeomVertexRewriter(geom->modify_vertex_data(), "vertex");
+            rewriter = new GeomVertexRewriter(geom->modify_vertex_data(), InternalName::get_vertex());
             geom_data->vertices = rewriter;
 
             // While we're here, we're gonna get the defaults.
@@ -31,6 +31,10 @@ void Deformer::disassemble_node() {
                 vertex = rewriter->get_data3f();
                 geom_data->original_vertices.push_back(vertex);
             }
+
+            // and another for the normals..
+            rewriter = new GeomVertexRewriter(geom->modify_vertex_data(), InternalName::get_normal());
+            geom_data->normals = rewriter;
 
             _vertex_data.push_back(geom_data);
         }
@@ -52,18 +56,23 @@ void Deformer::deform_all(double time) {
 */
 void Deformer::deform(GeomData* geom_data, double time) {
     GeomVertexRewriter* vertices = geom_data->vertices;
+    GeomVertexRewriter* normals = geom_data->normals;
 
     // Default to zero:
     LVecBase3f vertex = LVecBase3f::zero();
+    LVecBase3f normal = LVecBase3f::zero();
 
     // Reset rows.
     vertices->set_row(0);
+    normals->set_row(0);
 
     // Iterate through the vertices:
     size_t index = 0;
     while (!vertices->is_at_end()) {
         vertex = geom_data->original_vertices[index];
-        update_vertex(vertex, time);
+        if (!normals->is_at_end()) normal = normals->get_data3f();
+
+        update_vertex(vertex, normal, time);
         vertices->set_data3f(vertex);
         index++;
     }
@@ -73,4 +82,4 @@ void Deformer::deform(GeomData* geom_data, double time) {
 * Individual vertex deformation. <vertex> is updated in-place.
 * Children should always override this function specifically.
 */
-void Deformer::update_vertex(LVecBase3f& vertex, double time) {}
+void Deformer::update_vertex(LVecBase3f& vertex, LVecBase3f& normals, double time) {}

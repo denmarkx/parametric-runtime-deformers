@@ -32,7 +32,7 @@ inline void BendDeformer::set_axis(Axis new_axis) {
 /*
 * Updates vertices per time. The second minor axis has no effect.
 */
-void BendDeformer::update_vertex(LVecBase3f& vertex, double time) {
+void BendDeformer::update_vertex(LVecBase3f& vertex, LVecBase3f& normals, double time) {
     /*
     * Converted into a visual parametric equation here:
     * https://www.desmos.com/3d/jh74yzrget 
