@@ -7,6 +7,7 @@ PUBLISHED:
 
 public:
     virtual void update_vertex(LVecBase3f& vertex, LVecBase3f& normal, double time);
+    inline void set_axis(Axis new_axis);
     double lerp(double v0, double v1, double t);
 
 private:
@@ -15,6 +16,9 @@ private:
 private:
     float _scale = 1.0;
     float _expand = 1.0;
-    float _low_bound = 1.5;
-    float _high_bound = 3.3;
+    float _low_bound = 0.0;
+    float _high_bound = 0.0;
+
+    double _bottom;
+    double _top;
 };
